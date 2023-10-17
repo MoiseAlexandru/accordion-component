@@ -28,21 +28,24 @@ export default function App() {
 }
 
 function Accordion({data}) {
+
+    const [currentOpen, setCurrentOpen] = useState(null);
+
     return (
         <div className = "accordion">
             {data.map((el, index) => (
-                <AccordionItem num = {index} title = {el.title} text = {el.text} key = {el.title} />
+                <AccordionItem currentOpen = {currentOpen} onOpen = {setCurrentOpen} title = {el.title} num = {index} key = {el.title} > {el.text} </AccordionItem>
             ))}
         </div>
     );
 }
 
-function AccordionItem({num, title, text}) {
+function AccordionItem({currentOpen, num, title, onOpen, children}) {
 
-    const [isOpen, setIsOpen] = useState(false);
+    const isOpen = (num === currentOpen);
 
     function handleToggle() {
-        setIsOpen((isOpen) => !isOpen);
+        onOpen(isOpen ? "null" : num);
     }
 
     return (
@@ -52,7 +55,7 @@ function AccordionItem({num, title, text}) {
             <p className = "icon">{isOpen ? "-" : "+"}</p>
 
             {isOpen &&
-                <div className = "content-box"> {text} </div>
+                <div className = "content-box"> {children} </div>
             }
         </div>
     );
